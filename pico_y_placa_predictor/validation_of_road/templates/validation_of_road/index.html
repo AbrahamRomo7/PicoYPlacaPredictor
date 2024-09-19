@@ -1,0 +1,25 @@
+{% extends 'validation_of_road/base/base.html' %}
+{%load static%}
+
+{% block site_css %}
+<link rel="stylesheet" href="{% static 'validation_of_road/styles/index.css' %}">
+{% endblock %}
+{% block body %}
+<div class="container">
+    <form>
+        <div class="input-group">
+            <label for="plate">License plate number</label>
+            <input type="text" id="plate" name="plate" placeholder="(TDD-314)">
+        </div>
+        <div class="input-group">
+            <label for="fecha">Date</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="input-group">
+            <label for="hora">Hour</label>
+            <input type="time" id="hour" name="hour">
+        </div>
+        <button type="submit">Go</button>
+    </form>
+</div>
+{% endblock %}
