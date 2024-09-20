@@ -1,25 +1,51 @@
 {% extends 'validation_of_road/base/base.html' %}
-{%load static%}
+{% load static %}
 
 {% block site_css %}
 <link rel="stylesheet" href="{% static 'validation_of_road/styles/index.css' %}">
 {% endblock %}
 {% block body %}
 <div class="container">
-    <form>
+    <form id="vehicle-form" method="post">
+        {% csrf_token %}
         <div class="input-group">
             <label for="plate">License plate number</label>
-            <input type="text" id="plate" name="plate" placeholder="(TDD-314)">
+            <input type="text" id="plate" name="plate" placeholder="(TDD-314)" required>
         </div>
         <div class="input-group">
             <label for="fecha">Date</label>
-            <input type="date" id="date" name="date">
+            <input type="text" id="date" name="date" required placeholder="Enter the date (e.g., YYYY-MM-DD)">
         </div>
         <div class="input-group">
             <label for="hora">Hour</label>
-            <input type="time" id="hour" name="hour">
+            <input type="time" id="hour" name="hour" required>
         </div>
         <button type="submit">Go</button>
     </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#vehicle-form').on('submit', function(event) {
+            event.preventDefault(); // Evita el envío del formulario
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "check_vehicle" %}',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.can_be_on_road) {
+                        alert("You are enabled to be on road");
+                    } else {
+                        alert("You are not enabled to be on road");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
